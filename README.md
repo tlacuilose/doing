@@ -31,7 +31,7 @@ doing -a [description]
 - Mark task as completed: Marks a task as completed.
 
 ```bash
-doing -c [task id]
+doing -c [task number from the last]
 ```
 
 - Delete task: Deletes a task.
@@ -48,7 +48,8 @@ doing -r
 
 ## Considerations
 
-- Tasks fall on two categories: doing and done. Deleted tasks are not recoverable.
+- doing -c command accepts an index from last doing tasks, 0, 1, 2
+- Tasks fall on two categories: doing and completed. Deleted tasks are not recoverable.
 - Tasks are saved on a store text file defined in the saving package.
 Default is store/tasks.txt
 - Tasks are given an id, based on the task count defined on the store text file.

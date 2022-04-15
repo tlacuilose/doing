@@ -29,7 +29,7 @@ func printCompletedTodos(todos []Todo) error {
 }
 
 func printUncompletedTodos(todos []Todo) error {
-
+	return nil
 }
 
 func main() {
