@@ -10,51 +10,31 @@ import (
 // Test expected to run correct arguments and flags.
 func TestParseCorrectFlagsAndArgs(t *testing.T) {
 	var tests = []struct {
-		action string
-		body   string
+		command     string
+		action      string
+		body        string
+		commandType CommandType
 	}{
-		{"-la", ""},
-		{"-ld", ""},
-		{"-lc", ""},
-		{"-a", "New task description."},
-		{"-c", "123"},
-		{"-d", "123"},
-		{"-r", ""},
+		{"command", "-la", "", ListAll},
+		{"command", "-ld", "", ListDoing},
+		{"command", "-lc", "", ListCompleted},
+		{"command", "-a", "New task description.", AddTask},
+		{"command", "-c", "123", CompleteTask},
+		{"command", "-d", "123", DeleteTask},
+		{"command", "-r", "", ResetTasks},
 	}
 
 	for _, tt := range tests {
 		testname := fmt.Sprintf("Parsing cmd %v", tt)
 		t.Run(testname, func(t *testing.T) {
-			os.Args = []string{tt.action, tt.body}
-			_, err := parseFlagsAndArgs()
+			os.Args = []string{tt.command, tt.action, tt.body}
+			command, err := ParseFromShell()
 			flag.CommandLine = flag.NewFlagSet(os.Args[0], flag.ExitOnError)
-			if err == nil {
+			if err != nil {
 				t.Errorf("Expected command to not throw errors: %v", tt)
 			}
-		})
-	}
-}
-
-// Test expected to catch incorrect arguments and flags.
-func TestParseIncorrectFlagsAndArgs(t *testing.T) {
-	var tests = []struct {
-		action string
-		body   string
-	}{
-		{"-a", ""},
-		{"-c", "abc123"},
-		{"-d", ""},
-		{"-s", ""},
-	}
-
-	for _, tt := range tests {
-		testname := fmt.Sprintf("Parsing cmd %v", tt)
-		t.Run(testname, func(t *testing.T) {
-			os.Args = []string{tt.action, tt.body}
-			_, err := parseFlagsAndArgs()
-			flag.CommandLine = flag.NewFlagSet(os.Args[0], flag.ExitOnError)
-			if err == nil {
-				t.Errorf("Expected command to fail because of errors: %v", tt)
+			if command.Type != tt.commandType {
+				t.Errorf("Expected command of type %v, got %v", tt.commandType, command.Type)
 			}
 		})
 	}
@@ -63,12 +43,13 @@ func TestParseIncorrectFlagsAndArgs(t *testing.T) {
 // Test expected to catch extra arguments.
 func TestExtraArgs(t *testing.T) {
 	var tests = []struct {
+		command  string
 		action   string
 		body     string
 		extraArg string
 	}{
-		{"-a", "-la", "wefwe"},
-		{"-c", "123", ""},
+		{"command", "-a", "la", "wefwe"},
+		{"command", "-c", "123", ""},
 	}
 
 	for _, tt := range tests {
@@ -79,6 +60,32 @@ func TestExtraArgs(t *testing.T) {
 			flag.CommandLine = flag.NewFlagSet(os.Args[0], flag.ExitOnError)
 			if err == nil {
 				t.Errorf("Expected command to fail for extra arguments: %v", tt)
+			}
+		})
+	}
+}
+
+// Test expected to catch incorrect arguments and flags.
+func TestParseAndValidateIncorrectFlagsAndArgs(t *testing.T) {
+	var tests = []struct {
+		command string
+		action  string
+		body    string
+	}{
+		{"command", "-a", ""},
+		{"command", "-c", "abc123"},
+		{"command", "-d", ""},
+		{"command", "-s", ""},
+	}
+
+	for _, tt := range tests {
+		testname := fmt.Sprintf("Parsing cmd %v", tt)
+		t.Run(testname, func(t *testing.T) {
+			os.Args = []string{tt.action, tt.body}
+			_, err := ParseFromShell()
+			flag.CommandLine = flag.NewFlagSet(os.Args[0], flag.ExitOnError)
+			if err == nil {
+				t.Errorf("Expected command to fail because of errors: %v", tt)
 			}
 		})
 	}

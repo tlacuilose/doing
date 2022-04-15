@@ -39,6 +39,7 @@ func parseFlagsAndArgs() (Command, error) {
 	completeTaskFlag := flag.Bool("c", false, "Mark task as completed")
 	deleteTaskFlag := flag.Bool("d", false, "Delete task")
 	resetTasksFlag := flag.Bool("r", false, "Reset all tasks, permanently deletes all tasks.")
+	flag.Parse()
 
 	// First flag recognized in the above order is returned.
 
@@ -103,6 +104,9 @@ func validateCommandBody(command Command) error {
 // Returns a Command with type and body or an error.
 func ParseFromShell() (Command, error) {
 	cmd, err := parseFlagsAndArgs()
+	if err != nil {
+		return cmd, err
+	}
 	err = validateCommandBody(cmd)
 	return cmd, err
 }
