@@ -22,9 +22,9 @@ const (
 func getStatus(s Status) string {
 	switch s {
 	case Doing:
-		return "Doing"
+		return "[Doing]\t"
 	case Completed:
-		return "Completed"
+		return "[Completed]"
 	}
 	return "404"
 }
@@ -49,7 +49,7 @@ func (t *Task) validate() error {
 
 // Print a task in format [Status] Description created: CreationTime
 func (t *Task) Print() string {
-	return fmt.Sprintf("[%s] %s created: %s\n", getStatus(t.Status), t.Description, t.CreationTime)
+	return fmt.Sprintf("(%s) %s\t %s", t.CreationTime, getStatus(t.Status), t.Description)
 }
 
 // Complete, change task status to completed.
@@ -60,7 +60,7 @@ func (t *Task) Complete() {
 // New creates a new task with the current time and a status of doing.
 func New(description string) Task {
 	return Task{
-		CreationTime: time.Now().Format(time.RFC850),
+		CreationTime: time.Now().Format(time.RFC822),
 		Description:  description,
 		Status:       Doing,
 	}
