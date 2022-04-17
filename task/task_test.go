@@ -9,7 +9,7 @@ import (
 
 // Test the creation of a new task with the current time and a status of doing.
 func TestNewTask(t *testing.T) {
-	now := time.Now().Format(time.RFC850)
+	now := time.Now().Format(time.RFC822)
 	expectedTask := "new task"
 	initialStatus := Doing
 	task := New(expectedTask)
@@ -29,7 +29,7 @@ func TestNewTask(t *testing.T) {
 
 // Test that a new task can be marked as completed.
 func TestMarkCompletedTask(t *testing.T) {
-	now := time.Now().Format(time.RFC850)
+	now := time.Now().Format(time.RFC822)
 	expectedTask := "A new task"
 	task := New(expectedTask)
 	task.Complete()
@@ -49,17 +49,17 @@ func TestMarkCompletedTask(t *testing.T) {
 
 // Test printing a task with the current time and doing status and then completed.
 func TestPrintDoingTask(t *testing.T) {
-	now := time.Now().Format(time.RFC850)
+	now := time.Now().Format(time.RFC822)
 	expectedTask := "A new task"
 	task := New(expectedTask)
-	expectedDoingPrint := fmt.Sprintf("[Doing] %s created: %s\n", expectedTask, now)
+	expectedDoingPrint := fmt.Sprintf("(%s) [Doing]\t\t %s", now, expectedTask)
 
 	if task.Print() != expectedDoingPrint {
 		t.Fatal("Doing task was incorrectly printed.")
 	}
 
 	task.Complete()
-	expectedCompletedPrint := fmt.Sprintf("[Completed] %s created: %s\n", expectedTask, now)
+	expectedCompletedPrint := fmt.Sprintf("(%s) [Completed]\t %s", now, expectedTask)
 
 	if task.Print() != expectedCompletedPrint {
 		t.Fatal("Completed task was incorrectly printed.")

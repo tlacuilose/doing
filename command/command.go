@@ -36,8 +36,8 @@ func parseFlagsAndArgs() (Command, error) {
 	listDoingFlag := flag.Bool("ld", false, "List all tasks doing")
 	listCompletedFlag := flag.Bool("lc", false, "List all tasks completed")
 	addTaskFlag := flag.Bool("a", false, "Add new task")
-	completeTaskFlag := flag.Bool("c", false, "Mark task as completed")
-	deleteTaskFlag := flag.Bool("d", false, "Delete task")
+	completeTaskFlag := flag.Bool("c", false, "Mark task as completed of index [i] in list all.")
+	deleteTaskFlag := flag.Bool("d", false, "Delete task of index [i] in list all.")
 	resetTasksFlag := flag.Bool("r", false, "Reset all tasks, permanently deletes all tasks.")
 	flag.Parse()
 

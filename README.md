@@ -28,16 +28,16 @@ doing -lc
 doing -a [description]
 ```
 
-- Mark task as completed: Marks a task as completed.
+- Mark task as completed: Marks a task of index [i] in list all as completed.
 
 ```bash
-doing -c [task number from the last]
+doing -c [i]
 ```
 
-- Delete task: Deletes a task.
+- Delete task: Deletes a task of index [i] in list all.
 
 ```bash
-doing -d [task id]
+doing -d [i]
 ```
 
 - Reset: deletes all stored tasks.
