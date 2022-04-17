@@ -19,6 +19,16 @@ const (
 	Completed
 )
 
+func getStatus(s Status) string {
+	switch s {
+	case Doing:
+		return "Doing"
+	case Completed:
+		return "Completed"
+	}
+	return "404"
+}
+
 // Group all status for reference of length and members.
 var allStatus = []Status{Doing, Completed}
 
@@ -35,6 +45,16 @@ func (t *Task) validate() error {
 		return errors.New("Malformed task.")
 	}
 	return nil
+}
+
+// Print a task in format [Status] Description created: CreationTime
+func (t *Task) Print() string {
+	return fmt.Sprintf("[%s] %s created: %s\n", getStatus(t.Status), t.Description, t.CreationTime)
+}
+
+// Complete, change task status to completed.
+func (t *Task) Complete() {
+	t.Status = Completed
 }
 
 // New creates a new task with the current time and a status of doing.
