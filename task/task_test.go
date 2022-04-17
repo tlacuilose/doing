@@ -37,7 +37,7 @@ func TestEncodeTask(t *testing.T) {
 
 	var status int64 = 0
 
-	expectedEncodedTask := fmt.Sprintf("%s,%s,%d", btime, bdescription, status)
+	expectedEncodedTask := fmt.Sprintf("%s,%s,%d\n", btime, bdescription, status)
 
 	task := Task{timeString, descriptionString, Status(status)}
 
@@ -62,6 +62,7 @@ func TestDecodeTask(t *testing.T) {
 
 	status := Status(0)
 
+	// No \n because scan() should read a line.
 	encodedTask := fmt.Sprintf("%s,%s,%d", btime, bdescription, status)
 
 	task, err := Decode(encodedTask)

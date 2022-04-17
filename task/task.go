@@ -67,7 +67,7 @@ func Encode(task *Task) (string, error) {
 	bTime := b64Encode(task.CreationTime)
 	bDescription := b64Encode(task.Description)
 
-	encodedTask := fmt.Sprintf("%s,%s,%d", bTime, bDescription, task.Status)
+	encodedTask := fmt.Sprintf("%s,%s,%d\n", bTime, bDescription, task.Status)
 
 	return encodedTask, nil
 }
